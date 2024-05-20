@@ -1,0 +1,23 @@
+version: '3.8'
+
+services:
+  app:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    ports:
+      - "8080:8080"
+    container_name: ps-app
+    depends_on:
+      - postgresql
+    entrypoint: ["/usr/local/bin/wait-for-it.sh", "ps-psql:5432", "--", "/server"]
+
+  postgresql:
+    image: postgres:16-alpine
+    container_name: ps-psql
+    environment:
+      - POSTGRES_DB=posts_dev
+      - POSTGRES_USER=postgres
+      - POSTGRES_PASSWORD=Robotesf5
+    volumes:
+      - .data:/var/lib/postgresql/data

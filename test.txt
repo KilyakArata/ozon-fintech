@@ -1,0 +1,133 @@
+query getPosts {
+  posts{
+    author
+    body
+    open
+    comments{
+      author
+      body
+      comments{
+        author
+      	body
+        comments{
+        	author
+      		body
+      }
+      }
+    }
+    }
+}
+
+1.Запрос комментариев с фильтрацией и пагинацией:
+query {
+  comments(filter: { user: "Alice", body: "Great post!" }, limit: 5, offset: 10) {
+    id
+    user
+    body
+    comments {
+      id
+      user
+      body
+    }
+  }
+}
+
+2. Запрос всех постов:
+query {
+  posts {
+    id
+    user
+    body
+    open
+    comments {
+      id
+      user
+      body
+    }
+  }
+}
+
+3. Запрос конкретного поста по ID:
+query {
+  post(id: "post123") {
+    id
+    user
+    body
+    open
+    comments {
+      id
+      user
+      body
+    }
+  }
+}
+
+Мутации:
+1. Создание нового комментария:
+mutation {
+  createComment(input: { user: "Bob", body: "Nice article!", parentPost: "post123" }) {
+    id
+    user
+    body
+    comments {
+      id
+      user
+      body
+    }
+  }
+}
+
+2. Обновление комментария:
+mutation {
+  updateComment(id: "comment456", input: { body: "Updated comment text" }) {
+    id
+    user
+    body
+    open
+    comments {
+      id
+      user
+      body
+    }
+  }
+}
+
+3. Удаление комментария:
+mutation {
+  deleteComment(id: "comment456")
+}
+
+4. Создание нового поста:
+mutation {
+  createPost(input: { user: "Charlie", body: "This is a new post", open: true }) {
+    id
+    user
+    body
+    open
+    comments {
+      id
+      user
+      body
+    }
+  }
+}
+
+5.Обновление поста:
+mutation {
+  updatePost(id: "post123", input: { body: "Updated post content", open: false }) {
+    id
+    user
+    body
+    open
+    comments {
+      id
+      user
+      body
+    }
+  }
+}
+
+6. Удаление поста:
+mutation {
+  deletePost(id: "post123")
+}

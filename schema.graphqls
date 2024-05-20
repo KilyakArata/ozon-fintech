@@ -1,0 +1,62 @@
+type Post{
+    id: ID!
+    author: String!
+    body: String!
+    open: Boolean!
+
+    comments: [Comment!]
+}
+
+type Comment{
+    id: ID!
+    author: String!
+    body: String!
+
+    comments: [Comment!]
+}
+
+input NewComment{
+    author: String!
+    body: String!
+    parentPost: ID!
+    parentComment: ID
+}
+
+input NewPost{
+    author: String!
+    body: String!
+    open: Boolean!
+}
+
+input CommentFilter {
+    author: String
+    body: String
+}
+
+input UpdatePost {
+    body: String
+    open: Boolean
+}
+
+input UpdateComment {
+    body: String
+}
+
+type Query{
+    comments(filter: CommentFilter, limit: Int = 10, offset: Int = 0): [Comment!]!
+    posts: [Post!]!
+    post(id:  ID!): Post!
+}
+
+type Mutation {
+    createComment(input: NewComment!): Comment!
+    updateComment(id: ID!, input: UpdateComment!): Comment!
+    deleteComment(id: ID!): Boolean!
+    createPost(input: NewPost!): Post!
+    updatePost(id: ID!, input: UpdatePost!): Post!
+    deletePost(id: ID!): Boolean!
+}
+
+type Subscription {
+    commentAdded(postId: ID!): Comment!
+}
